@@ -362,7 +362,7 @@ class NLayerDiscriminator(nn.Module):
             self.model = nn.Sequential(*sequence)
 
         else:
-            raise NotImplementedError('Gan mode [%s] is not implemented' % self.gan_mode)
+            raise NotImplementedError(f"Gan mode [{self.gan_mode} is not implemented")
 
     def forward(self, input):
         """Standard forward."""
@@ -611,7 +611,7 @@ class PixelDiscriminator(nn.Module):
 
             self.net = nn.Sequential(*self.net)
         else:
-            raise NotImplementedError('Gan mode [%s] is not implemented' % self.gan_mode)
+            raise NotImplementedError(f"Gan mode [{self.gan_mode} is not implemented")
 
     def forward(self, input):
         """Standard forward."""
