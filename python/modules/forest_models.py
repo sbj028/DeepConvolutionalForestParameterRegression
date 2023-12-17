@@ -836,9 +836,7 @@ class VolumeForestModel(BasicModelModules):
             self.real_B = input['target'].to(self.device)
             self.real_B_mask = input['target_vol_mask_tensor'].to(self.device)
             self.real_B_gr_mask = input['target_gr_mask_tensor'].to(self.device)
-
             self.image_paths = input['input_paths']
-
 
     def forward(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
