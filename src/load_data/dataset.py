@@ -2,7 +2,6 @@ from torch.utils.data import Dataset
 from .load_data import make_dataset
 from .transforms import get_transform, get_params
 import torch
-import imageio
 import tifffile
 import numpy as np
 
@@ -53,8 +52,6 @@ class RemoteSensingDataset(Dataset):
         if input_pth.endswith('.tiff') or input_pth.endswith('.tif'):
 
             # Read images as np arrays:
-            # input_img_tmp = tifffile.imread(input_pth)
-            # input_img_tmp = imageio.imread(input_pth)
             input_img_tmp = tifffile.imread(input_pth)
 
             # Transform to tensors:
@@ -254,7 +251,8 @@ class RS_AGBDataset(Dataset):
                 if self.convert == True or self.convert == 'true' or self.convert == 'True':
                     # Get transformations on input data:
                     transform_params = get_params(self.opt, (h, w))
-                    input_trans = get_transform(self.opt, self.input_nc, transform_params, grayscale=(self.input_nc == 1))
+                    input_trans = get_transform(self.opt, self.input_nc, transform_params,
+                                                grayscale=(self.input_nc == 1))
                     # Return input_tensor
                     input_tensor = input_trans(input_arr[:, :, :])
                 elif self.convert == False or self.convert == 'false' or self.convert == 'False':
@@ -266,7 +264,7 @@ class RS_AGBDataset(Dataset):
                 # Target data and target mask converted to tensor:
                 target_tmp = np.array(target_img_tmp[:, :, 0]).astype(np.float32)  # Forest target map
                 target_forest_mask_tmp = np.array(target_img_tmp[:, :, 1]).astype(np.float32)  # Forest mask
-                target_gr_mask_tmp = np.array(target_img_tmp[:, :, 2]).astype(np.float32) # Forest GR mask
+                target_gr_mask_tmp = np.array(target_img_tmp[:, :, 2]).astype(np.float32)  # Forest GR mask
 
                 # Add channel dimension if it missing:
                 if len(target_tmp.shape) == 2:
@@ -293,7 +291,8 @@ class RS_AGBDataset(Dataset):
                 if self.convert == True or self.convert == 'true' or self.convert == 'True':
                     # Get transformations on input data:
                     transform_params = get_params(self.opt, (h, w))
-                    input_trans = get_transform(self.opt, self.input_nc, transform_params, grayscale=(self.input_nc == 1))
+                    input_trans = get_transform(self.opt, self.input_nc, transform_params,
+                                                grayscale=(self.input_nc == 1))
                     # Return input_tensor
                     input_tensor = input_trans(input_arr[:, :, :])
                 elif self.convert == False or self.convert == 'false' or self.convert == 'False':
