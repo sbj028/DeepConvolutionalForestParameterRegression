@@ -70,20 +70,20 @@ class BasicModelModules:
                 """
                 To continue train a model, i.e --continue_train is given (=True)
                 """
-                load_suffix = 'iter_%d' % opt.load_iter if opt.load_iter > 0 else opt.epoch
+                load_suffix = f"iter_{opt.load_iter}" if opt.load_iter > 0 else opt.epoch
                 self.load_networks_continue_training_or_test(load_suffix, opt)
             elif opt.continue_train_finetune:
                 """
                 To continue train a model fine-tuned model, --continue_train is given (=True)
                 """
-                load_suffix = 'iter_%d' % opt.load_iter if opt.load_iter > 0 else opt.epoch
+                load_suffix = f"iter_{opt.load_iter}"  if opt.load_iter > 0 else opt.epoch
                 self.load_networks_finetune(load_suffix, opt)
         if not self.isTrain:
             if opt.phase == 'test':
                 """
                 To load a model for testing. I.e. self.isTrain = False 
                 """
-                load_suffix = 'iter_%d' % opt.load_iter if opt.load_iter > 0 else opt.epoch
+                load_suffix = f"iter_{opt.load_iter}"  if opt.load_iter > 0 else opt.epoch
                 self.load_networks_continue_training_or_test(load_suffix, opt)
         self.print_networks(opt.verbose)
 
@@ -127,7 +127,7 @@ class BasicModelModules:
         - Want to run the test-phase and load a pretrained or a finetuned model
         
         Parameters:
-            epoch (int) -- current epoch; used in the file name '%s_net_%s.pth' % (epoch, name)
+            epoch (int) -- current epoch; used in the file name f"'"{epoch}_net_{name}.pth"'"
             opt (option class) -- stores all the experiment flags; needs to be a subclass of BaseOptions．　
         """
         for name in self.model_names:
@@ -189,7 +189,7 @@ class BasicModelModules:
         pre-trained models.
          
         Parameters:
-            epoch (int) -- current epoch; used in the file name '%s_net_%s.pth' % (epoch, name)
+            epoch (int) -- current epoch; used in the file name f"{epoch}_net_{net}.pth"
             opt (option class) -- stores all the experiment flags; needs to be a subclass of BaseOptions．　
         """
         for name in self.model_names:
@@ -253,7 +253,7 @@ class BasicModelModules:
         """Save all the networks to the disk.
 
         Parameters:
-            epoch (int) -- current epoch; used in the file name '%s_net_%s.pth' % (epoch, name)
+            epoch (int) -- current epoch; used in the file name f"{epoch}_net_{net}.pth"
             opt (option class) -- stores all the experiment flags; needs to be a subclass of BaseOptions．　
         """
         for name in self.model_names:
@@ -355,7 +355,7 @@ def get_scheduler(optimizer, opt):
     elif opt.lr_policy == 'cosine':
         scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=opt.niter, eta_min=0)
     else:
-        return NotImplementedError('learning rate policy [%s] is not implemented', opt.lr_policy)
+        return NotImplementedError(f"learning rate policy [{opt.lr_policy}] is not implemented")
     return scheduler
 
 
