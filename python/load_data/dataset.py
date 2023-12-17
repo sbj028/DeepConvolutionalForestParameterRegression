@@ -11,21 +11,19 @@ class RemoteSensingDataset(Dataset):
     Remote sensing dataset, i.e. input data
     """
 
-    def __init__(self, opt, input_path, transform=None):
+    def __init__(self, opt, input_path):
         """
         Init function, include all operations that we want the dataset to use/run once.
 
         Assume that both input and output data use the same extension, i,e. tiff etc,
         :param opt:
         :param input_path
-        :param transform
         """
 
         self.opt = opt
         self.Sentinel_pths = sorted(make_dataset(input_path, opt.max_dataset_size))  # Get input data pths
         self.input_nc = opt.input_nc
         self.extension = opt.extension  # image extension on input/outut data, i.e. .tiff
-        self.transform = transform
         self.convert = opt.convert  # True if want to use torchvision.transforms
 
     def __len__(self):
@@ -91,21 +89,19 @@ class AGBDataset(Dataset):
     AGB dataset, i.e. target dataset.
     """
 
-    def __init__(self, opt, target_path, transform=None):
+    def __init__(self, opt, target_path):
         """
         Init function, include all operations that we want the dataset to use/run once.
 
         Assume that both input and output data use the same extension, i,e. tiff etc,
         :param opt:
         :param target_path
-        :param transform
         """
 
         self.opt = opt
         self.AGB_pths = sorted(make_dataset(target_path, opt.max_dataset_size))  # Get input data pths
         self.target_nc = opt.target_nc
         self.extension = opt.extension  # image extension on input/outut data, i.e. .tiff
-        self.transform = transform
 
     def __len__(self):
         """
@@ -168,7 +164,7 @@ class AGBDataset(Dataset):
 
 
 class RS_AGBDataset(Dataset):
-    def __init__(self, opt, input_path, target_path, transform=None):
+    def __init__(self, opt, input_path, target_path):
         """
         Load input and target data at the same time, used for training when both are available.
         Init function, include all operations that we want the dataset to use/run once.
@@ -179,7 +175,6 @@ class RS_AGBDataset(Dataset):
         :param opt:
         :param input_path
         :param target_path
-        :param transform
         """
 
         self.opt = opt
@@ -188,7 +183,6 @@ class RS_AGBDataset(Dataset):
         self.input_nc = opt.input_nc
         self.target_nc = opt.target_nc
         self.extension = opt.extension  # image extension on input/outut data, i.e. .tiff
-        self.transform = transform
         self.convert = opt.convert  # True if want to use torchvision.transforms
 
     def __len__(self):
