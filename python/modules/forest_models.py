@@ -105,7 +105,7 @@ class AGBForestModel(BasicModelModules):
                         self.l_type == 'pregan_spec':
                     # Defining Discriminator without force target_nc=input_nc:
                     self.netD = define_D(opt.input_nc + opt.target_nc, opt.ndf, self.netD_type, self.gan_mode,
-                                         opt.input_shp, opt.n_layers_D, opt.norm, opt.init_type, opt.init_gain)
+                                         opt.n_layers_D, opt.norm, opt.init_type, opt.init_gain)
 
             """ Pretraining: """
             if self.isTrain and self.stage == 1:  # If train +pretrain mode:
@@ -693,7 +693,7 @@ class VolumeForestModel(BasicModelModules):
                         self.l_type == 'pregan_spec':
                     # Defining Discriminator without force target_nc=input_nc:
                     self.netD = define_D(opt.input_nc + opt.target_nc, opt.ndf, self.netD_type, self.gan_mode,
-                                         opt.input_shp, opt.n_layers_D, opt.norm, opt.init_type, opt.init_gain)
+                                         opt.n_layers_D, opt.norm, opt.init_type, opt.init_gain)
 
             """ Pretraining: """
             if self.isTrain and self.stage == 1:  # If train +pretrain mode:

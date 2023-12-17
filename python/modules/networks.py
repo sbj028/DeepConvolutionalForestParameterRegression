@@ -99,7 +99,7 @@ def define_G(target_nc, input_nc, input_shp, netG, pretrainweights, encoder_name
     return init_net_G(net)
 
 
-def define_D(input_nc, ndf, netD, gan_mode, input_shp, n_layers_D=3, norm='batch', init_type='normal', init_gain=0.02):
+def define_D(input_nc, ndf, netD, gan_mode, n_layers_D=3, norm='batch', init_type='normal', init_gain=0.02):
     """ Create a discriminator, based on Pix2Pix implementation in:
     https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/models/networks.py
 
@@ -109,7 +109,6 @@ def define_D(input_nc, ndf, netD, gan_mode, input_shp, n_layers_D=3, norm='batch
         netD (str)         -- the architecture's name: basic | n_layers | pixel
         gan_mode(str)      -- gan_mode is only added as an argument to know if we should use batch norm/instance norm
                             for vanilla or lsgan
-        input_shp (in)     -- input shape of image, i.e. width/height.
         n_layers_D (int)   -- the number of conv layers in the discriminator; effective when netD=='n_layers'
         norm (str)         -- the type of normalization layers used in the network.
         init_type (str)    -- the name of the initialization method.
@@ -136,11 +135,11 @@ def define_D(input_nc, ndf, netD, gan_mode, input_shp, n_layers_D=3, norm='batch
     if gan_mode in ['lsgan', 'vanilla']:
         norm_layer = get_norm_layer(norm_type=norm)
         if netD == 'basic':  # default PatchGAN classifier
-            net = NLayerDiscriminator(input_nc, gan_mode, input_shp, ndf, n_layers=3, norm_layer=norm_layer)
+            net = NLayerDiscriminator(input_nc, gan_mode, ndf, n_layers=3, norm_layer=norm_layer)
         elif netD == 'n_layers':  # more options
-            net = NLayerDiscriminator(input_nc, gan_mode, input_shp, ndf, n_layers=n_layers_D, norm_layer=norm_layer)
+            net = NLayerDiscriminator(input_nc, gan_mode, ndf, n_layers=n_layers_D, norm_layer=norm_layer)
         elif netD == 'pixel':  # classify if each pixel is real or fake
-            net = PixelDiscriminator(input_nc, gan_mode, input_shp, ndf, norm_layer=norm_layer)
+            net = PixelDiscriminator(input_nc, gan_mode, ndf, norm_layer=norm_layer)
         else:
             raise NotImplementedError(f"Discriminator model name {netD}")
     else:
@@ -319,12 +318,11 @@ class NLayerDiscriminator(nn.Module):
     https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/models/networks.py
     """
 
-    def __init__(self, input_nc, gan_mode, input_shp=64, ndf=64, n_layers=3, norm_layer=nn.BatchNorm2d):
+    def __init__(self, input_nc, gan_mode, ndf=64, n_layers=3, norm_layer=nn.BatchNorm2d):
         """Construct a PatchGAN discriminator
 
         Parameters:
             input_nc (int)  -- the number of channels in input images
-            input_shp (int) -- Width and height of input image. Assume that width=height.
             ndf (int)       -- the number of filters in the last conv layer
             n_layers (int)  -- the number of conv layers in the discriminator
             norm_layer      -- normalization layer
@@ -587,12 +585,11 @@ class PixelDiscriminator(nn.Module):
     https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/models/networks.py
     """
 
-    def __init__(self, input_nc, gan_mode, input_shp=64, ndf=64, norm_layer=nn.BatchNorm2d):
+    def __init__(self, input_nc, gan_mode, ndf=64, norm_layer=nn.BatchNorm2d):
         """Construct a 1x1 PatchGAN discriminator
 
         Parameters:
-            input_nc (int)  -- the number of channels in input images
-            input_shp (int) -- Width and height of input image. Assume that width=height.
+            input_nc (int)  -- the number of channels in input images.
             ndf (int)       -- the number of filters in the last conv layer
             norm_layer      -- normalization layer
         """
