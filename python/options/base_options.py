@@ -98,10 +98,6 @@ class BaseOptions:
                                                                  'pixel+gan+spec loss are used to train.')
         # paramters to store images as .tiff
         parser.add_argument('--extension', default='.tiff', type=str, help='can be .tiff, tif')
-        parser.add_argument('--mode_out', default='F', type=str,
-                            help='For PIL.Image.fromarray() can set the mode, i.e. dtype of output image. '
-                                 'See https://pillow.readthedocs.io/en/3.1.x/handbook/concepts.html#concept-modes'
-                                 'for possibilities.')
         parser.add_argument('--input_shp', default='64', type=int, help='Input shape of image, i.e. width/height. '
                                                                         'Assume that the image is a square, where '
                                                                         'width = height.')
