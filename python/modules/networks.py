@@ -142,10 +142,9 @@ def define_D(input_nc, ndf, netD, gan_mode, input_shp, n_layers_D=3, norm='batch
         elif netD == 'pixel':  # classify if each pixel is real or fake
             net = PixelDiscriminator(input_nc, gan_mode, input_shp, ndf, norm_layer=norm_layer)
         else:
-            raise NotImplementedError('Discriminator model name [%s] is not recognized' % netD)
+            raise NotImplementedError(f"Discriminator model name {netD}")
     else:
-        raise NotImplementedError('Gan mode name [%s] is not implemented' % gan_mode)
-    # return init_net(net, init_type, init_gain, gpu_ids)
+        raise NotImplementedError(f"GAN mode name {gan_mode} is not implemented")
     return init_net_D(net, init_type, init_gain)
 
 
