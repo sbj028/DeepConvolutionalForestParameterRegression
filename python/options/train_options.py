@@ -15,8 +15,6 @@ class TrainOptions(BaseOptions):
                             help='frequency of saving training results to wandb')
         parser.add_argument('--print_freq', type=int, default=100,
                             help='frequency of showing training results on console')
-        parser.add_argument('--log_dir', type=str, default='logs/train/',
-                            help='Where to store logs if not using wandb')
         parser.add_argument('--l_type', type=str, default='pixel',
                             help='Type of loss(es) used, can be: | pixel | gan | prepixel_gan | prepixel_spec '
                                  '|prepixel_gan_spec |pregan_spec')
