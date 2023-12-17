@@ -1,5 +1,4 @@
 import torch
-import os
 from modules.networks import define_G, define_D, get_norm_layer, GANLossImputeAGB, GANLossImputeVolume, GANLoss
 from .basicmodelmodule import BasicModelModules
 from modules import losses
@@ -13,7 +12,7 @@ class AGBForestModel(BasicModelModules):
 
         Parameters:
             parser          -- original option parser
-            is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
+            is_train (bool) -- whether training phase or test phase.
 
         Returns:
             the modified parser.
@@ -67,7 +66,8 @@ class AGBForestModel(BasicModelModules):
                     elif self.l_type == 'gan':  # Baseline Pix2Pix G and D losses.
                         self.l_names = ['Pre_G_GAN', 'Pre_G_Pixel', 'G_tot', 'D_tot']
                     else:
-                        raise NotImplementedError(f"l_type must be set to 'pixel' or 'gan' when self.stage={self.stage}.")
+                        raise NotImplementedError(f"l_type must be set to 'pixel' or 'gan' "
+                                                  f"when self.stage={self.stage}.")
                 elif self.isTrain and self.stage == 2:  # If train + 2nd stage of training:
                     if self.l_type == 'prepixel_gan':
                         # Pretrain G on Pixel loss, then fine-tune G on all gan losses
@@ -82,11 +82,12 @@ class AGBForestModel(BasicModelModules):
                         # Pretrain G with GAN fine-tune G on additional spectral loss
                         self.l_names = ['G_GAN', 'G_Pixel', 'G_Spec', 'G_tot', 'D_tot']
 
-            # specify the images you want to save/display. The training/test scripts will
+            # Specify the images you want to save/display. The training/test scripts will
             # call <BaseModel.get_current_visuals>
             self.visual_names = ['real_A', 'fake_B', 'real_B']
 
-            # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
+            # Specify the models you want to save to the disk. The training/test scripts will call
+            # <BaseModel.save_networks> and <BaseModel.load_networks>
             if self.isTrain and self.stage == 1:
                 if self.l_type == 'gan':  # If train +pretrain mode + GAN:
                     self.model_names = ['G', 'D']
@@ -107,8 +108,8 @@ class AGBForestModel(BasicModelModules):
                 if self.l_type == 'gan' or self.l_type == 'prepixel_gan' or self.l_type == 'prepixel_gan_spec' or \
                         self.l_type == 'pregan_spec':
                     # Defining Discriminator without force target_nc=input_nc:
-                    self.netD = define_D(opt.input_nc + opt.target_nc, opt.ndf, self.netD_type, self.gan_mode, opt.input_shp,
-                                         opt.n_layers_D, opt.norm, opt.init_type, opt.init_gain)
+                    self.netD = define_D(opt.input_nc + opt.target_nc, opt.ndf, self.netD_type, self.gan_mode,
+                                         opt.input_shp, opt.n_layers_D, opt.norm, opt.init_type, opt.init_gain)
 
             """ Pretraining: """
             if self.isTrain and self.stage == 1:  # If train +pretrain mode:
@@ -126,7 +127,7 @@ class AGBForestModel(BasicModelModules):
                     """ Pretraining with GAN losses"""
                     if self.netD_type in self.netD_type in ['n_layers', 'basic']:
                         self.criterionGAN = GANLoss(self.gan_mode).to(self.device)
-                    else: # PixelDiscriminator
+                    else:  # PixelDiscriminator
                         self.criterionGAN = GANLossImputeAGB(self.gan_mode).to(self.device)
                     self.criterionPixel = losses.AGBPixelLossImpute(opt.l1_l2)
 
@@ -145,7 +146,7 @@ class AGBForestModel(BasicModelModules):
                 # define loss functions
 
                 """ Pixel + GAN losses: """
-                if self.l_type == 'prepixel_gan': # Pretrain G on Pixel loss, then fine-tune G on all gan losses
+                if self.l_type == 'prepixel_gan':  # Pretrain G on Pixel loss, then fine-tune G on all gan losses
                     """GAN losses:"""
                     if self.netD_type in self.netD_type in ['n_layers', 'basic']:
                         self.criterionGAN = GANLoss(self.gan_mode).to(self.device)
@@ -177,7 +178,7 @@ class AGBForestModel(BasicModelModules):
                     self.optimizers.append(self.optimizer_G)
 
                     """ GAN + Spectral losses: """
-                elif self.l_type == 'pregan_spec': # Pretrain G with GAN fine-tune G on additional spectral loss
+                elif self.l_type == 'pregan_spec':  # Pretrain G with GAN fine-tune G on additional spectral loss
 
                     """ GAN losses"""
                     if self.netD_type in self.netD_type in ['n_layers', 'basic']:
@@ -247,7 +248,6 @@ class AGBForestModel(BasicModelModules):
             self.real_B = input['target'].to(self.device)
             self.real_B_gr_mask = input['target_gr_mask_tensor'].to(self.device)
             self.image_paths = input['input_paths']
-
 
     def forward(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
@@ -509,7 +509,7 @@ class Test_AGBForestModel(BasicModelModules):
 
         Parameters:
             parser          -- original option parser
-            is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
+            is_train (bool) -- whether training phase or test phase.
 
         Returns:
             the modified parser.
@@ -564,10 +564,7 @@ class Test_AGBForestModel(BasicModelModules):
                     raise ValueError(
                         f"Got dataset={opt.dataset_mode} but test model with target path only accepts dataset='rs_agb'")
 
-
-
-            # assigns the model to self.netG so that it can be loaded
-            # please see <BaseModel.load_networks> # TODO update this one
+            # Assigns the model to self.netG so that it can be loaded
             setattr(self, 'netG', self.netG)  # store netG in self.
         else:
             raise ValueError(f"Got arg weighted={self.volume}, but must be False to use this model.")
@@ -609,7 +606,7 @@ class VolumeForestModel(BasicModelModules):
 
         Parameters:
             parser          -- original option parser
-            is_train (bool) -- whether training/trainval phase or test phase. You can use this flag to add training-specific or test-specific options.
+            is_train (bool) -- whether training/trainval phase or test phase.
 
         Returns:
             the modified parser.
@@ -661,7 +658,8 @@ class VolumeForestModel(BasicModelModules):
                     elif self.l_type == 'gan':  # Baseline Pix2Pix G and D losses.
                         self.l_names = ['Pre_G_GAN', 'Pre_G_Pixel', 'G_tot', 'D_tot']
                     else:
-                        raise NotImplementedError(f"l_type must be set to 'pixel' or 'gan' when self.stage={self.stage}.")
+                        raise NotImplementedError(f"l_type must be set to 'pixel' or 'gan' when "
+                                                  f"self.stage={self.stage}.")
                 elif self.isTrain and self.stage == 2:  # If train + 2nd stage of training:
                     if self.l_type == 'prepixel_gan':
                         # Pretrain G on Pixel loss, then fine-tune G on all gan losses
@@ -680,7 +678,8 @@ class VolumeForestModel(BasicModelModules):
             # call <BaseModel.get_current_visuals>
             self.visual_names = ['real_A', 'fake_B', 'real_B']
 
-            # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
+            # specify the models you want to save to the disk. The training/test scripts will call
+            # <BaseModel.save_networks> and <BaseModel.load_networks>
             if self.isTrain and self.stage == 1:
                 if self.l_type == 'gan':  # If train +pretrain mode + GAN:
                     self.model_names = ['G', 'D']
@@ -718,7 +717,7 @@ class VolumeForestModel(BasicModelModules):
                 if self.l_type == 'gan':  # Only GAN loss
                     """ Pretraining with GAN losses"""
                     if self.netD_type in self.netD_type in ['n_layers', 'basic']:
-                       self.criterionGAN = GANLoss(self.gan_mode).to(self.device)
+                        self.criterionGAN = GANLoss(self.gan_mode).to(self.device)
                     else:  # PixelDiscriminator
                         self.criterionGAN = GANLossImputeVolume(self.gan_mode).to(self.device)
                     self.criterionPixel = losses.VolumePixelLossImpute(l1_l2=opt.l1_l2)
@@ -967,7 +966,7 @@ class VolumeForestModel(BasicModelModules):
                     # Combine volume and GR loss and include impute_w
                     self.loss_Pre_G_GAN = self.loss_Pre_G_GAN_vol + self.loss_Pre_G_GAN_gr * self.impute_w
 
-                else: # PixelDiscriminator:
+                else:  # PixelDiscriminator:
                     # For gan-loss need to fake the discriminator.
                     fake_AB = torch.cat((self.real_A, self.fake_B), 1)
                     pred_fake = self.netD(fake_AB)
@@ -1177,7 +1176,7 @@ class Test_VolumeForestModel(BasicModelModules):
 
         Parameters:
             parser          -- original option parser
-            is_train (bool) -- whether training phase or test phase. You can use this flag to add training-specific or test-specific options.
+            is_train (bool) -- whether training phase or test phase.
 
         Returns:
             the modified parser.
