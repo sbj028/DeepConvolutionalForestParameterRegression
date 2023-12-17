@@ -24,7 +24,7 @@ if __name__ == '__main__':
     # hard-code some parameters for test
     opt.num_threads = 0   # test code only supports num_threads = 1
     opt.batch_size = 1    # test code only supports batch_size = 1
-    opt.serial_batches = True  # disable data shuffling; comment this line if results on randomly chosen images are needed.
+    opt.serial_batches = True  # disable data shuffling
     opt.no_flip = True    # no flip; comment this line if results on flipped images are needed.
 
     # Check length of norm_mean and norm_std list so that it corresponds with input_nc:
@@ -47,10 +47,10 @@ if __name__ == '__main__':
     # Create output dir and write images to it:
     if opt.stage == 1:
         """Test a pretrain/baseline model: """
-        output_dir = os.path.join(opt.results_dir, opt.name, f'{opt.phase}_{opt.epoch}')  # define the output dir
+        output_dir = os.path.join(opt.results_dir, opt.name, f'{opt.phase}_{opt.epoch}')  # define output dir
     elif opt.stage == 2:
         """Test a finetuned model: """
-        output_dir = os.path.join(opt.results_dir,  opt.name_finetune, f'{opt.phase}_{opt.epoch}')  # define the output dir
+        output_dir = os.path.join(opt.results_dir,  opt.name_finetune, f'{opt.phase}_{opt.epoch}')  # define output dir
 
     output = write_output(output_dir)
 
@@ -68,5 +68,5 @@ if __name__ == '__main__':
         img_path = model.get_image_paths()     # get image paths
 
         if i % 5 == 0:  # save images to output dir
-            print('processing (%04d)-th image... %s' % (i, img_path))
+            print(f"processing {i}-th image... {img_path}")
         save_images(output, visuals, img_path, opt.extension, opt, opt.aspect_ratio)
