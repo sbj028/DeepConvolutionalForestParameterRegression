@@ -69,6 +69,6 @@ class TrainOptions(BaseOptions):
                                                                                       'use same as experiment name.')
         # Parameters for frequency awareness and spectral loss:
         parser.add_argument('--spec_loss_name', type=str, default='fft',
-                            help='What spectral loss to use, default ai-losss.')
+                            help='What spectral loss to use, default fft-loss.')
         self.isTrain = True
         return parser
