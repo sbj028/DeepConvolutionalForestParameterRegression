@@ -4,11 +4,12 @@ from util import util
 import torch
 
 
-class BaseOptions():
+class BaseOptions:
     """This class defines options used during both training and test time.
 
     It also implements several helper functions such as parsing, printing, and saving the options.
-    It also gathers additional options defined in <modify_commandline_options> functions in both dataset class and model class.
+    It also gathers additional options defined in <modify_commandline_options> functions in both
+    dataset class and model class.
     """
 
     def __init__(self):
@@ -45,8 +46,8 @@ class BaseOptions():
         parser.add_argument('--netG', type=str, default='customUnet', help='For the moment, "customUnet" is the only '
                                                                            'option.')
         parser.add_argument('--encoder_name', type=str, default='resnet34',
-                            help='Check https://segmentation-modelspytorch.readthedocs.io/en/latest/docs/api.html#linknet '
-                                 'for possibilities')
+                            help='For possibilites, check '
+                                 'https://segmentation-modelspytorch.readthedocs.io/en/latest/docs/api.html#linknet')
         parser.add_argument('--enc_depth', type=int, default=4, help='3,4 or 5 are probably good choices.')
         parser.add_argument('--n_blocks', type=int, default=6, help='Number of ResNet blocks in bottleneck.')
 
@@ -60,11 +61,6 @@ class BaseOptions():
                             help='Can be: | True | None |. If True, will load weights from pretrained ResNet'
                                  '(ImageNet weights) else initialize weights randomly. Only used in training, during'
                                  'inference stored weights overwrite these.')
-        # parser.add_argument('--init_type', type=str, default='normal',
-        # help='network initialization [normal | xavier | kaiming | orthogonal]')
-        # parser.add_argument('--init_gain', type=float, default=0.02, help='scaling factor for normal, xavier and orthogonal.')
-        # TODO: If enable no_dropout arg has to disable it for test and validation generator.
-        # parser.add_argument('--no_dropout', action='store_true', help='no dropout for the generator')
         # # dataset parameters
         parser.add_argument('--dataset_mode', type=str, default='rs_agb',
                             help='chooses if single input (remotesensing) or target (agb) data, or combined '
@@ -73,9 +69,8 @@ class BaseOptions():
                             help='if true, takes images in order to make batches, otherwise takes them randomly')
         parser.add_argument('--num_threads', default=4, type=int, help='# threads for loading data')
         parser.add_argument('--batch_size', type=int, default=5, help='input batch size')
-        # parser.add_argument('--load_size', type=int, default=286, help='scale images to this size')
         parser.add_argument('--max_dataset_size', type=int, default=float("inf"),
-                            help='Maximum number of samples allowed per dataset. If the dataset directory contains more '
+                            help='Maximum number of samples allowed per dataset. If the dataset directory contains more'
                                  'than max_dataset_size, only a subset is loaded.')
         # Normalization/Preprocess args:
         parser.add_argument('--preprocess', type=str, default='none',
