@@ -6,7 +6,7 @@ import time
 import torch
 from evaluate import evaluate
 from util.visualizer import Visualizer
-from modules.AE_AGB import AGBForestModel
+from modules.forest_models import AGBForestModel
 from options.train_options import TrainOptions  # If cluster
 from load_data.datasetloader import create_dataset
 
