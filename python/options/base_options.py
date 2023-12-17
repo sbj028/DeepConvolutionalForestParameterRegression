@@ -142,7 +142,7 @@ class BaseOptions:
             comment = ''
             default = self.parser.get_default(k)
             if v != default:
-                comment = '\t[default: %s]' % str(default)
+                comment = f"\t[default: {default}]"
             message += '{:>25}: {:<30}{}\n'.format(str(k), str(v), comment)
         message += '----------------- End -------------------'
         print(message)
@@ -164,7 +164,7 @@ class BaseOptions:
             file_name = os.path.join(expr_dir, 'opt_pretrain.txt')
         elif opt.stage == 2:
             if opt.sweep == 'True' or opt.sweep == 'true' or opt.sweep == True:  # if use wandb sweep:
-                file_name = os.path.join(expr_dir_finetune_sweep, f'opt_finetune.txt')
+                file_name = os.path.join(expr_dir_finetune_sweep, f"opt_finetune.txt")
             else:
                 file_name = os.path.join(expr_dir_finetune, 'opt_finetune.txt')
         else:
