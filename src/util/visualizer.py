@@ -112,7 +112,7 @@ class Visualizer:
 
         # Initialize wandb if not already done:
         if self.use_wandb:
-            if opt.sweep == 'False' or opt.sweep == 'false' or opt.sweep == False: # if don't use wandb sweep:
+            if opt.sweep == 'False' or opt.sweep == 'false' or opt.sweep == False:  # if don't use wandb sweep:
                 self.wandb_run = wandb.init(project=opt.wandb_project, name=opt.wandb_name,
                                             config=opt) if not wandb.run else wandb.run
                 self.wandb_run._label(repo=opt.wandb_project)
@@ -140,13 +140,12 @@ class Visualizer:
         """Reset the self.saved status"""
         self.saved = False
 
-    def display_current_results(self, visuals, epoch, save_result):
+    def display_current_results(self, visuals, epoch):
         """Display current results on wandb;
         save current results to an HTML file.
         Parameters:
             visuals (OrderedDict) - - dictionary of images to display or save
             epoch (int) - - the current epoch
-            save_result (bool) - - if save the current results to an HTML file
         """
         if self.use_wandb:
             columns = [key for key, _ in visuals.items()]
@@ -171,7 +170,6 @@ class Visualizer:
                 self.current_epoch = epoch
                 result_table.add_data(*table_row)
                 self.wandb_run.log({"Result": result_table})
-
 
     # losses: same format as |losses| of plot_current_losses
     def print_current_losses(self, epoch, iters, losses, t_comp, t_data):
