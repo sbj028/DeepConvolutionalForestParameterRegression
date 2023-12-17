@@ -134,7 +134,7 @@ class Visualizer:
 
         with open(self.log_name, "a") as log_file:
             now = time.strftime("%c")
-            log_file.write('================ Training Loss (%s) ================\n' % now)
+            log_file.write(f"================ Training Loss ({str(now)}) ================\n")
 
     def reset(self):
         """Reset the self.saved status"""
@@ -193,7 +193,7 @@ class Visualizer:
 
         print(message)  # print the message
         with open(self.log_name, "a") as log_file:
-            log_file.write('%s\n' % message)  # save the message
+            log_file.write(f"{message}\n")  # save the message
 
     def wandb_sweep(self, metrics):
         self.wandb_run.log(metrics)
