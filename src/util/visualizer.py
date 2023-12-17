@@ -171,13 +171,7 @@ class Visualizer:
                 self.current_epoch = epoch
                 result_table.add_data(*table_row)
                 self.wandb_run.log({"Result": result_table})
-        elif not self.use_wandb and (save_result or not self.saved):  # save images if they haven't been saved to wandb.
-            self.saved = True
-            # save images to the disk
-            for label, image in visuals.items():
-                image_numpy = util.tensor2im(image, self.relu)
-                img_path = os.path.join(self.img_dir, 'epoch%.3d_%s.png' % (epoch, label))
-                util.save_image(image_numpy, img_path)
+
 
     # losses: same format as |losses| of plot_current_losses
     def print_current_losses(self, epoch, iters, losses, t_comp, t_data):
