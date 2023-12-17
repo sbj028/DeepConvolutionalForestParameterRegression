@@ -43,3 +43,16 @@ To fine-tune e.g. the Tanzanian Pixel-aware Regression U-Net model on a combinat
 To test e.g the pretrained Tanzanian Pixel-aware Regression U-Net mode above run e.g 
 
 `python3 python/test.py --alpha 0 --batch_size 1 --checkpoints_dir ./checkpoints_unet/tanzanian_agb_train --convert False --crop_size 64 --dataset_mode remotesensing --enc_depth 5 --encoder_name resnet34 --epoch 50 --extension .tiff --gpu_ids -1 --input_nc 3 --input_shp 64 --name pretrain_pixel_model --netG customUnet --no_flip --norm none --norm_mean 0.485 0.456 0.406 --norm_std 0.229 0.224 0.225 --num_test 507 --phase test --preprocess none --pretrainweights None --results_dir ./results/Tanzania/A_for_AGB --stage 1 --target_nc 1 --test_input_path python/datasets/Tanzania/test/ --use_wandb False`
+
+# Citation
+If you use this code please cite 
+`@misc{björk2023forest,
+      title={Forest Parameter Prediction by Multiobjective Deep Learning of Regression Models Trained with Pseudo-Target Imputation}, 
+      author={Sara Björk and Stian N. Anfinsen and Michael Kampffmeyer and Erik Næsset and Terje Gobakken and Lennart Noordermeer},
+      year={2023},
+      eprint={2306.11103},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}`
+
+The code-basis is inspired by Isola. et al.'s implementation for their Pix2pix model. See [here](https://github.com/phillipi/pix2pix) for references of how to cite their work.  
