@@ -36,10 +36,6 @@ class AGBForestModel(BasicModelModules):
         opt.stage: (int) # Stage 1= pretraining with pixel loss, stage=2 2nd part, training with additional losses
         """
 
-        # # Set device:
-        # # TODO: add as args in future.
-        # self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
         BasicModelModules.__init__(self, opt)
         self.gan_mode = opt.gan_mode
         self.volume = opt.volume
@@ -630,10 +626,6 @@ class VolumeForestModel(BasicModelModules):
         opt.stage: (int) # Stage 1= pretraining with pixel loss, stage=2 2nd part, training with additional losses
         """
 
-        # # Set device:
-        # # TODO: add as args in future.
-        # self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
         BasicModelModules.__init__(self, opt)
         self.gan_mode = opt.gan_mode
         self.volume = opt.volume
@@ -838,10 +830,6 @@ class VolumeForestModel(BasicModelModules):
             self.real_B_mask = input['target_vol_mask_tensor'].to(self.device)
             self.image_paths = input['input_paths']
 
-            # TODO: check if this is needed:
-            # # Create a zero mask that ensure that impute_loss is 0 independent on value of self.impute_w
-            # self.real_B_gr_mask = torch.zeros(self.input_shp, self.input_shp).to(self.device)
-
         elif self.num_input == 6:
             """ Input, target + forest mask + GR mask"""
             self.real_A = input['input'].to(self.device)
@@ -854,7 +842,6 @@ class VolumeForestModel(BasicModelModules):
 
     def forward(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        # TODO: Check if mask also should be passed to forward with real_A
         self.fake_B = self.netG(self.real_A)  # self.net(A) i.e. the generator model
 
     def backward_D(self):
@@ -1230,8 +1217,7 @@ class Test_VolumeForestModel(BasicModelModules):
                     raise ValueError(
                         f"Got dataset={opt.dataset_mode} but test model with target path only accepts dataset='rs_agb'")
 
-            # assigns the model to self.netG so that it can be loaded
-            # please see <BaseModel.load_networks> # TODO update this one
+            # Assigns the model to self.netG so that it can be loaded
             setattr(self, 'netG', self.netG)  # store netG in self.
         else:
             raise ValueError(f"Got arg weighted={self.volume}, but must be False to use this model.")
