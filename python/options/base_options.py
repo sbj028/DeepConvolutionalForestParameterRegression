@@ -48,7 +48,6 @@ class BaseOptions:
                             help='For possibilites, check '
                                  'https://segmentation-modelspytorch.readthedocs.io/en/latest/docs/api.html#linknet')
         parser.add_argument('--enc_depth', type=int, default=4, help='3,4 or 5 are probably good choices.')
-        parser.add_argument('--n_blocks', type=int, default=6, help='Number of ResNet blocks in bottleneck.')
 
         parser.add_argument('--n_layers_D', type=int, default=3, help='only used if netD==n_layers')
         parser.add_argument('--norm', type=str, default='instance',
