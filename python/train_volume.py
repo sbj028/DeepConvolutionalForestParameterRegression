@@ -77,7 +77,7 @@ if __name__ == "__main__":
                 # cache our latest model every <save_latest_freq> iterations
                 if total_iters % opt.save_latest_freq == 0:
                     print(f"Saving the latest model (epoch {epoch} total_iters {total_iters})")
-                    save_suffix = 'iter_%d' % total_iters if opt.save_by_iter else 'latest'
+                    save_suffix = f"iter_{total_iters}" if opt.save_by_iter else 'latest'
                     model.save_networks(save_suffix, opt)
 
                 iter_data_time = time.time()
@@ -151,7 +151,7 @@ if __name__ == "__main__":
                 # cache our latest model every <save_latest_freq> iterations:
                 if total_iters % opt.save_latest_freq == 0:
                     print(f"Saving the latest model (epoch {epoch} total_iters {total_iters})")
-                    save_suffix = 'iter_%d' % total_iters if opt.save_by_iter else 'latest'
+                    save_suffix = f"iter_{total_iters}" if opt.save_by_iter else 'latest'
 
                     model.save_networks(save_suffix, opt)
 
